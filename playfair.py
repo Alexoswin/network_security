@@ -48,19 +48,27 @@ def playfair_encrypt(plaintext, key):
             char2 = "X"
             i += 1
 
-        row1, col1 = find_position(matrix, char1)
-        row2, col2 = find_position(matrix, char2)
+        position1 = find_position(matrix, char1)
+        position2 = find_position(matrix, char2)
 
-        if row1 == row2:
-            col1 = (col1 + 1) % 5
-            col2 = (col2 + 1) % 5
-        elif col1 == col2:
-            row1 = (row1 + 1) % 5
-            row2 = (row2 + 1) % 5
+        if position1 is not None and position2 is not None:
+            row1, col1 = position1
+            row2, col2 = position2
+
+            if row1 == row2:
+                col1 = (col1 + 1) % 5
+                col2 = (col2 + 1) % 5
+            elif col1 == col2:
+                row1 = (row1 + 1) % 5
+                row2 = (row2 + 1) % 5
+            else:
+                col1, col2 = col2, col1
+
+            ciphertext += matrix[row1][col1] + matrix[row2][col2]
         else:
-            col1, col2 = col2, col1
+            # Handle invalid characters
+            ciphertext += char1 + char2
 
-        ciphertext += matrix[row1][col1] + matrix[row2][col2]
         i += 2
 
     return ciphertext
